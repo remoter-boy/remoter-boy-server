@@ -3,7 +3,10 @@ package common
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"strconv"
+
+	_ "github.com/lib/pq" // PostgreSQL 드라이버
 )
 
 func InitDatabase() *sql.DB {
@@ -20,6 +23,7 @@ func InitDatabase() *sql.DB {
 	db, err := sql.Open("postgres", dbInfo)
 
 	if err != nil {
+		log.Println(err)
 		return nil
 	}
 
