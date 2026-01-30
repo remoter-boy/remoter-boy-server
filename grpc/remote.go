@@ -26,12 +26,12 @@ func (s *Server) Connect(stream remoter.Remoter_ConnectServer) error {
 		LastPing: time.Now(),
 	}
 	s.clients.Store(client.ID, client)
-	log.Printf("[연결됨] 클라이언트: %s", client.ID)
+	log.Printf("[Connect] Client: %s", client.ID)
 
-	// 연결 종료 시 정리
+	// Clean up at the end of the connection
 	defer func() {
 		s.clients.Delete(client.ID)
-		log.Printf("[연결 끊김] 클라이언트: %s", client.ID)
+		log.Printf("[Disconnet] Client: %s", client.ID)
 	}()
 
 	for {
@@ -47,7 +47,7 @@ func (s *Server) Connect(stream remoter.Remoter_ConnectServer) error {
 
 		client.LastPing = time.Now()
 
-		// 응답 전송
+		// send Response
 		if err := stream.Send(&remoter.NilResponseMsg{}); err != nil {
 			return err
 		}
