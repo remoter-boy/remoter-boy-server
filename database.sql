@@ -4,7 +4,7 @@ create table tb_client
         constraint tb_client_pk
             primary key,
     connected_at timestamp default now() not null,
-    updated_at   timestamp               not null
+    updated_at   timestamp
 );
 
 alter table tb_client
@@ -20,6 +20,7 @@ create table tb_cpu
     client_id       varchar(36)      not null
         constraint tb_cpu_tb_client_client_id_fk
             references tb_client
+            on delete cascade
 );
 
 alter table tb_cpu
@@ -36,6 +37,7 @@ create table tb_ram
     client_id    varchar(36)      not null
         constraint tb_ram_tb_client_client_id_fk
             references tb_client
+            on delete cascade
 );
 
 alter table tb_ram
@@ -54,6 +56,7 @@ create table tb_disk
     client_id    varchar(36)      not null
         constraint tb_disk_tb_client_client_id_fk
             references tb_client
+            on delete cascade
 );
 
 alter table tb_disk
@@ -68,6 +71,7 @@ create table tb_internet_protocol
     client_id              varchar(36) not null
         constraint tb_internet_protocol_tb_client_client_id_fk
             references tb_client
+            on delete cascade
 );
 
 alter table tb_internet_protocol
