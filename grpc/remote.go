@@ -15,9 +15,20 @@ type ClientInfo struct {
 	LastPing time.Time
 }
 
-func CreateClient(db *sql.DB, clinetId string) (*sql.Result, error) {
+func CreateClient(db *sql.DB, clientId string) (*sql.Result, error) {
 	query := `INSERT INTO public.tb_client ("client_id") VALUES ($1)`
-	result, err := db.Exec(query, clinetId)
+	result, err := db.Exec(query, clientId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
+func DeleteClient(db *sql.DB, clientId string) (*sql.Result, error) {
+	query := "DELETE FROM public.tb_client where client_id = $1"
+	result, err := db.Exec(query, clientId)
 
 	if err != nil {
 		return nil, err
@@ -60,6 +71,11 @@ func (s *Server) Connect(stream remoter.Remoter_ConnectServer) error {
 	// Clean up at the end of the connection
 	defer func() {
 		s.clients.Delete(client.ID)
+		_, err = DeleteClient(db, client.ID)
+
+		if err != nil {
+			log.Println("Client Delete Error: " + err.Error())
+		}
 		log.Printf("[Disconnet] Client: %s", client.ID)
 	}()
 
