@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+package remoter;
+
+option go_package = "./remoter";
+

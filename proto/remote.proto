@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package remoter;
+
+option go_package = "./remoter";
+
+message CpuStat {
+    int32 core = 1;
+    float load = 2;
+}
+
+message RamStat {
+    float usedPercent = 1;
+    float usedGb = 2;
+    float totalGb = 3;
+}
+
+message DiskStat {
+    string device = 1;
+    string mountPoint = 2;
+    float usedPercent = 3;
+    float usedGb = 4;
+    float totalGb = 5;
+}
+
+message IpInfo {
+    repeated string Ips = 1;
+}
+
+message InfoRequestMsg {
+    string clientId = 1;
+    repeated CpuStat cpu = 2;
+    RamStat ram = 3;
+    repeated DiskStat disk = 4;
+    IpInfo ips = 5;
+    int64 timestamp = 6;
+}

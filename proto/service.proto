@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package remoter;
+
+option go_package = "./remoter";
+
+import "remote.proto";
+
+message NilResponseMsg {}
+
+service Remoter {
+    rpc Connect(stream InfoRequestMsg) returns (stream NilResponseMsg);
+}
