@@ -1,8 +1,10 @@
 package grpc
 
 import (
+	"database/sql"
 	"io"
 	"log"
+	"remoter-boy-server/common"
 	remoter "remoter-boy-server/proto_go"
 	"time"
 )
@@ -13,10 +15,37 @@ type ClientInfo struct {
 	LastPing time.Time
 }
 
+func CreateClient(db *sql.DB, clinetId string) (*sql.Result, error) {
+	query := `INSERT INTO public.tb_client ("client_id") VALUES ($1)`
+	result, err := db.Exec(query, clinetId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
 func (s *Server) Connect(stream remoter.Remoter_ConnectServer) error {
+	db := common.InitDatabase()
+
+	if db == nil {
+		panic("Database Connect Error")
+	}
+
+	defer db.Close()
+
 	recv, err := stream.Recv()
 
 	if err != nil {
+		log.Println("stream.Recv() Error:" + err.Error())
+		return err
+	}
+
+	_, err = CreateClient(db, recv.ClientId)
+
+	if err != nil {
+		log.Println("Client Insert Error:" + err.Error())
 		return err
 	}
 
@@ -35,15 +64,12 @@ func (s *Server) Connect(stream remoter.Remoter_ConnectServer) error {
 	}()
 
 	for {
-		msg, err := stream.Recv()
 		if err == io.EOF {
 			return nil
 		}
 		if err != nil {
 			return err
 		}
-
-		log.Println(msg.ClientId)
 
 		client.LastPing = time.Now()
 
