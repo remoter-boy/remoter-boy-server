@@ -28,13 +28,13 @@ alter table tb_cpu
 
 create table tb_ram
 (
-    ram_uuid     varchar(36)      not null
+    ram_uuid        varchar(36)      not null
         constraint tb_ram_pk
             primary key,
-    used_percent double precision not null,
-    used_gb      double precision not null,
-    total_gb     double precision not null,
-    client_id    varchar(36)      not null
+    ram_use_percent double precision not null,
+    ram_use_gb      double precision not null,
+    ram_total_gb    double precision not null,
+    client_id       varchar(36)      not null
         constraint tb_ram_tb_client_client_id_fk
             references tb_client
             on delete cascade
@@ -45,15 +45,15 @@ alter table tb_ram
 
 create table tb_disk
 (
-    disk_uuid    varchar(36)      not null
+    disk_uuid        varchar(36)      not null
         constraint tb_disk_pk
             primary key,
-    device       varchar(100)     not null,
-    mount_point  varchar(100)     not null,
-    used_percent double precision not null,
-    used_gb      double precision not null,
-    total_gb     double precision not null,
-    client_id    varchar(36)      not null
+    disk_device      varchar(100)     not null,
+    disk_mount_point varchar(100)     not null,
+    disk_use_percent double precision not null,
+    disk_use_gb      double precision not null,
+    disk_total_gb    double precision not null,
+    client_id        varchar(36)      not null
         constraint tb_disk_tb_client_client_id_fk
             references tb_client
             on delete cascade
@@ -67,7 +67,7 @@ create table tb_internet_protocol
     internet_protocol_uuid varchar(36) not null
         constraint tb_internet_protocol_pk
             primary key,
-    internet_protocol      varchar(25) not null,
+    v4                     varchar(25) not null,
     client_id              varchar(36) not null
         constraint tb_internet_protocol_tb_client_client_id_fk
             references tb_client
