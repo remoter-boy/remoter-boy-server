@@ -131,6 +131,11 @@ func UpdateClientInfo(db *sql.DB, clientId string, msg *remoter.InfoRequestMsg) 
 		}
 	}
 
+	err = UpdateClient(db, clientId)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

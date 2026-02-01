@@ -46,3 +46,8 @@ func DeleteClientAll(db *sql.DB) error {
 
 	return nil
 }
+
+func UpdateClient(db *sql.DB, clientId string) error {
+	_, err := db.Exec("UPDATE public.tb_client SET updated_at = now() WHERE client_id = $1", clientId)
+	return err
+}
