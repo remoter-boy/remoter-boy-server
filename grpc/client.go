@@ -35,3 +35,14 @@ func DeleteClient(db *sql.DB, clientId string) (*sql.Result, error) {
 
 	return &result, nil
 }
+
+func DeleteClientAll(db *sql.DB) error {
+	query := "DELETE FROM public.tb_client"
+	_, err := db.Exec(query)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
