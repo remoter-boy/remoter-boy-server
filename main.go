@@ -53,5 +53,10 @@ func main() {
 	case <-time.After(10 * time.Second):
 		log.Println("timeout! force stop")
 		srv.Stop()
+	default:
+		err = grpc.DeleteClientAll(common.InitDatabase())
+		if err != nil {
+			log.Println("DeleteClientAll Error: " + err.Error())
+		}
 	}
 }
